@@ -8,10 +8,9 @@ struct point{
 inline int dist(point a, point b){
     return abs(a.x - b.x) + abs(a.y - b.y);
 }
-int memo[1 << 11] [11];
+int n, memo[1 << 11] [11];
+vector<point>      points;
 int tsp(){
-    int n;
-    vector<point> points;
     for(int i = 0; i < (1 << n); i++){
     	for(int j = 0; j < n; j++){
     		memo[i] [j] = (int)1e5 + 7;
