@@ -1,15 +1,15 @@
 struct point{
-	int x = 0;
-	int y = 0;
-	point(int x = 0, int y = 0):x(x), y(y){}
+    int x = 0; 
+    int y = 0;
+    point(int x = 0, int y = 0):x(x), y(y){}
 };
 inline int dist(point a, point b){
-	return abs(a.x - b.x) + abs(a.y - b.y);
+    return abs(a.x - b.x) + abs(a.y - b.y);
 }
 int memo[1 << 11] [11];
 int tsp(){
-	vector<point> points;
-	for(int i = 0; i < (1 << n); i++){
+    vector<point> points;
+    for(int i = 0; i < (1 << n); i++){
     	for(int j = 0; j < n; j++){
     		memo[i] [j] = (int)1e5 + 7;
     	}
