@@ -1,3 +1,4 @@
+// uva 10496 - Collecting Beepers
 // n points are given you have to traverse all the point Start traversing from point 0 and return at point 0. find out minimum cost.
 struct point{
     int x = 0; 
