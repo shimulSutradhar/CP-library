@@ -10,6 +10,7 @@ inline int dist(point a, point b){
 }
 int memo[1 << 11] [11];
 int tsp(){
+    int n;
     vector<point> points;
     for(int i = 0; i < (1 << n); i++){
     	for(int j = 0; j < n; j++){
