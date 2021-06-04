@@ -25,12 +25,6 @@ struct hashing{
     hashing(string _str){
         str = _str;
         len = str.length() - 1;
-        for(int i = 0; i <= len + 5; i++){
-            forwardHash[0] [i] = 0;
-            forwardHash[1] [i] = 0;
-            backwardHash[0] [i] = 0;
-            backwardHash[1] [i] = 0;
-        }
         Build();
     }
     void Build(){
