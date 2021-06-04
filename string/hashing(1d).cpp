@@ -5,7 +5,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long i64;
-const int MAX = 109;
+const int MAX = 100009;
 i64 mods[2] = {1000000007, 1000000009};
 //Some back-up primes: 1072857881, 1066517951, 1040160883
 i64 bases[2] = {137, 281};
@@ -25,18 +25,24 @@ struct hashing{
     hashing(string _str){
         str = _str;
         len = str.length() - 1;
-        memset(forwardHash, 0, sizeof forwardHash);
-        memset(backwardHash, 0, sizeof backwardHash);
-        forwardHashBuild();
-        backwardHashBuild();
+        for(int i = 0; i <= len + 5; i++){
+            forwardHash[0] [i] = 0;
+            forwardHash[1] [i] = 0;
+            backwardHash[0] [i] = 0;
+            backwardHash[1] [i] = 0;
+        }
+        Build();
     }
-    // forward hash
-    void forwardHashBuild(){
+    void Build(){
         forwardHash[0] [0] = str[0];
         forwardHash[1] [0] = str[0];
-        for(int i = 1; i <= len; i++){
+        backwardHash[0] [len] = str[len];
+        backwardHash[1] [len] = str[len];
+        for(int i = 1, j = len - 1; i <= len; i++, j--){
             forwardHash[0] [i] = (forwardHash[0] [i - 1] * bases[0] + str[i]) % mods[0];
             forwardHash[1] [i] = (forwardHash[1] [i - 1] * bases[1] + str[i]) % mods[1];
+            backwardHash[0] [j] = (backwardHash[0] [j + 1] * bases[0] + str[j]) % mods[0];
+            backwardHash[1] [j] = (backwardHash[1] [j + 1] * bases[1] + str[j]) % mods[1];
         }
     }
     pair<i64, i64> getForwardHash(int left, int right){
@@ -53,15 +59,6 @@ struct hashing{
         }
         return {ans[0], ans[1]};
     }
-    // backward hash
-    void backwardHashBuild(){
-        backwardHash[0] [len] = str[len];
-        backwardHash[1] [len] = str[len];
-        for(int i = len - 1; i >= 0; i--){
-            backwardHash[0] [i] = (backwardHash[0] [i + 1] * bases[0] + str[i]) % mods[0];
-            backwardHash[1] [i] = (backwardHash[1] [i + 1] * bases[1] + str[i]) % mods[1];
-        }
-    }
     pair<i64, i64> getBackwardHash(int left, int right){
         assert(left <= right);
         i64 ans[2];
@@ -77,7 +74,3 @@ struct hashing{
         return {ans[0], ans[1]};
     }
 };
-int main(){
-    procedure();
-    return 0;
-}
