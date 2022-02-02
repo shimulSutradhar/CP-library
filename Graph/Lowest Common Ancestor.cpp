@@ -52,7 +52,7 @@ int queary(int l, int r){
     swap(l, r);
   }
   int k = logs[r - l + 1];
-  return f(st[l] [k], st[r - (1 << k) + 1] [k]);
+  return ett[f(st[l] [k], st[r - (1 << k) + 1] [k])];
 }
 
 int main( ){
