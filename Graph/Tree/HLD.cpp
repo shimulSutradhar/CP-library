@@ -2,11 +2,12 @@
 using namespace std;
 #define f first
 #define s second
-const int MAX = 1e4;
+const int MAX = 1e6 + 7;
 
 vector<pair<int, int>> adj[MAX];
-int Heavy[MAX], Head[MAX],Parent[MAX], Pos[MAX], arr[MAX], curent_pos;
+int Heavy[MAX], Head[MAX],Parent[MAX], Pos[MAX], curent_pos;
 int ett[MAX], depth_node[MAX], last_appearance[MAX], timer;
+int arr[MAX];
 // lca
 void euler_toue(int at = 1, int depth = 0, int parent = -1){
     depth_node[timer] = depth;
@@ -59,7 +60,11 @@ int lca_queary(int l, int r){
 }
 
 //segment tree
-int Tree[4 * MAX];
+using Type = long long;
+Type Tree[MAX];
+Type marge(Type a, Type b){
+    return max(a, b);
+}
 void build(int at, int left, int right){
     if(left == right){
         Tree[at] = arr[left];
@@ -68,19 +73,30 @@ void build(int at, int left, int right){
     int mid = (left + right) >> 1;
     build(2 * at, left, mid);
     build(2 * at + 1, mid + 1, right);
-    Tree[at] = Tree[2 * at] + Tree[2 * at + 1];
+    Tree[at] = marge(Tree[2 * at], Tree[2 * at + 1]);
 }
-int queary(int at, int L, int R, int l, int r){
+Type queary(int at, int L, int R, int l, int r){
     if(r < L || R < l) return 0;
     if(l <= L && R <= r){
         return Tree[at];
     }
     int mid = (L + R) >> 1;
-    int x = queary(2 * at, L, mid, l, r);
-    int y = queary(2 * at + 1, mid + 1, R, l, r);
-    return x + y;
+    Type x = queary(2 * at, L, mid, l, r);
+    Type y = queary(2 * at + 1, mid + 1, R, l, r);
+    return marge(x, y);
 }
-
+void update(int at, int L, int R, int pos, int val){
+    if(pos < L || R < pos) return;
+    if(L == R){
+        Tree[at] = arr[L] = val;
+        return;
+    }
+    int mid = (L + R) >> 1;
+    update(2 * at, L, mid, pos, val);
+    update(2 * at + 1, mid + 1, R, pos, val);
+    Tree[at] = marge(Tree[2 * at], Tree[2 * at + 1]);
+}
+    
 // HLD
 int Hld_dfs(int at = 1, int parent = -1){
     int _size = 1, max_size = 0;
@@ -98,7 +114,6 @@ int Hld_dfs(int at = 1, int parent = -1){
 }
 
 void Decompose(int at = 1, int h = 1, int weight = 0, int parent = 1){
-    // cout << at << ' ' << weight << '\n';
     arr[curent_pos] = weight;
     Head[at] = h, Pos[at] = curent_pos++;
     if(Heavy[at]){
@@ -116,6 +131,7 @@ void Decompose(int at = 1, int h = 1, int weight = 0, int parent = 1){
 }
 
 void HLD_build(){
+    int limit = max(curent_pos, timer);
     curent_pos = 0, timer = 0;
     Hld_dfs();
     Decompose();
@@ -125,38 +141,28 @@ void HLD_build(){
     depth_node[timer] = INT_MAX;
 }
 
-int HLD_queary(int l, int r, int lca_node){
-    int ans = 0;
+Type HLD_queary(int l, int r){
+    int lca_node = lca_queary(l, r);
+    Type ans = 0;
     for(int i = 0; i < 2; i++){
         if(i == 1) l = r;
         while(Head[l] != Head[lca_node]){
             int x = Pos[l], y = Pos[Head[l]];
             if(x > y) swap(x, y);
-            ans += queary(1, 0, curent_pos, x, y);
+            ans = marge(ans, queary(1, 0, curent_pos, x, y));
             l = Parent[Head[l]];
         }
         if(l != lca_node){
             int x = Pos[l], y = Pos[Heavy[lca_node]];
             if(x > y) swap(x, y);
-            ans += queary(1, 0, curent_pos, x, y);
+            ans = marge(ans, queary(1, 0, curent_pos, x, y));
         }
     }
     return ans;
 }
 
 int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
     preprocess( );
-    int n;
-    cin >> n;
-    while(n--){
-        int x, y, w;
-        cin >> x >> y >> w;
-        adj[x].emplace_back(y, w);
-        adj[y].emplace_back(x, w);
-    }
     HLD_build();
-    cout << HLD_queary(8, 5, lca_queary(8, 5));
     return 0;
-}
+} 
