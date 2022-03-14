@@ -62,7 +62,6 @@ void update(int at, int x1, int x2, int y1, int y2, int depth, int a, int b, int
 	tree[at] = tree[2 * at] + tree[2 * at + 1];
 }
 int main( ){
-	freopen("input.txt", "r", stdin);
 	// build(1, 1, n, 1, n, 0);
 	// queary(1, 1, n, 1, n, 0, x1, x2, y1, y2);
 	// update(1, 1, n, 1, n, 0, x, y, val);
