@@ -24,8 +24,6 @@ void build(int n){
 }
 
 int queary(int l, int r){
-  l = last_appearance[l];
-  r = last_appearance[r];
   if(l > r){
     swap(l, r);
   }
