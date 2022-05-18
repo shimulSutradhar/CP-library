@@ -1,4 +1,4 @@
-// O(n*m)
+// O(V*E)
 const int inf = 1e8 + 7;
 struct edge{
   int v = 0;
