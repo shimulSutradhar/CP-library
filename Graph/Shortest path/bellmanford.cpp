@@ -4,6 +4,7 @@ struct edge{
   int v = 0;
   int u = 0;
   int w = 0;
+  edge(){}
   edge(int v = 0, int u = 0, int w = 0):v(v), u(u), w(w){}
 };
 vector<edge> edges;
