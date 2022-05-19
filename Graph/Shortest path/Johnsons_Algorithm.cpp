@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// O(V * E) + O(E * V * log(V) + E * E)
 // Compute a potential p for the graph G.
 // Create a new weighting w′ of the graph, where w′(u→v)=w(u→v)+p(u)−p(v).
 // Compute all-pairs shortest paths dist′ with the new weighting.
