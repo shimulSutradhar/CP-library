@@ -1,0 +1,61 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int MAX = 4 * 1e6 + 7;
+const int MAXN = 1e6;
+int cnt[MAX], lazy[MAX];
+void popagation(int at) {
+  if (lazy[at]) {
+    lazy[2 * at] = max(lazy[2 * at], lazy[at]);
+    lazy[2 * at + 1] = max(lazy[2 * at + 1], lazy[at]);;
+  }
+}
+void update(int at, int L, int R, 
+            int l, int r, int id) {
+  popagation(at);
+  if (r < L || l > R) {
+    return;
+  }
+  if (l <= L && R <= r) {
+    lazy[at] = id;
+    popagation(at);
+    return;
+  }
+  int mid = (L + R) >> 1;
+  update(2 * at,           L, mid, l, r, id);
+  update(2 * at + 1, mid + 1,   R, l, r, id);
+}
+int queary(int at, int L, int R, int idx) {
+  popagation(at);
+  if (L == R) {
+    return lazy[at];
+  }
+  int mid = (L + R) >> 1;
+  if (mid >= idx)
+    return queary(2 * at,           L, mid, idx);
+  else
+    return queary(2 * at + 1, mid + 1,   R, idx);
+}
+int main( ) {
+  int TC, CA = 1, n, l, r;
+  scanf("%d", &TC);
+  while (TC--) {
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++) {
+      scanf ("%d %d", &l, &r);
+      update(1, 1, MAXN, l, r, i);
+    }
+    int ans = 0;
+    for (int i = 1; i <= MAXN; i++) {
+      int k = queary(1, 1, MAXN, i);
+      if (k && !cnt[k]) {
+        cnt[k] = 1;
+        ++ans;
+      }
+    }
+    for (int i = 0; i < MAX; i++) {
+      cnt[i] = lazy[i] = 0;
+    }
+    printf("Case %d: %d\n", CA++, ans);
+  }
+  return 0;
+}
