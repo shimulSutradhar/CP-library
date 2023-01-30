@@ -1,5 +1,7 @@
+///convex hull for maximizing
+///in case of minimization, just insert(-m,-c) and negate the result for query
+
 using ll = long long int;
-using ld = long double;
 
 struct Line {
   mutable ll k, m, p;
