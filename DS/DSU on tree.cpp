@@ -27,5 +27,8 @@ void dfs(int at, int parent) {
 }
 
 int main( ) {
+  for (int i = 0; i < MAX; i++) {
+    Root[i] = i;
+  }
   return 0;
 }
