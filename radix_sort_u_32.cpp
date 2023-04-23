@@ -3,7 +3,7 @@
 const int  MAX = 1e8 + 7;
 unsigned int temp[MAX], cnt[4][256];
 
-void radix_sort(int *arr, int n) {
+void radix_sort(unsigned int *arr, int n) {
   for (int i = 0; i < n; i++) {
     ++cnt[0] [arr[i] & 255];
     ++cnt[1] [(arr[i] >> 8) & 255];
